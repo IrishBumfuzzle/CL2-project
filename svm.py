@@ -55,8 +55,6 @@ def load_data(data_dir):
 class SVMWSD:
     def __init__(self, use_pos=True):
         self.use_pos = use_pos
-        # models[key] = Pipeline(...) or str (if only one sense)
-        # key is (lemma, pos) if use_pos=True, else lemma
         self.models = {}
 
     def train(self, sentences):
@@ -80,7 +78,6 @@ class SVMWSD:
                         key = lemma
                         
                     # Feature extraction
-                    # Simple Bag of Words of the context
                     features = {}
                     current_context = context_words[:i] + context_words[i+1:]
                     for word in current_context:
@@ -168,7 +165,6 @@ def evaluate(model, sentences):
 if __name__ == "__main__":
     data_folder = "data"
     if not os.path.exists(data_folder):
-        # Fallback if running from a different directory
         data_folder = os.path.join(os.path.dirname(__file__), "data")
         
     print(f"Loading data from {data_folder}...")

@@ -54,8 +54,6 @@ def load_data(data_dir):
 class NaiveBayesWSD:
     def __init__(self, use_pos=True):
         self.use_pos = use_pos
-        # counts[key][sense] = count of times this sense appears
-        # key is (lemma, pos) if use_pos=True, else lemma
         self.sense_counts = defaultdict(lambda: defaultdict(int))
         
         # context_counts[key][sense][word] = count of times 'word' appears in context of 'lemma' with 'sense'
@@ -89,8 +87,6 @@ class NaiveBayesWSD:
                     # Update prior counts
                     self.sense_counts[key][sense] += 1
                     
-                    # Context is all other words in sentence
-                    # We exclude the target word itself from its own context
                     current_context = context_words[:i] + context_words[i+1:]
                     
                     for ctx_word in current_context:

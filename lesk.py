@@ -84,10 +84,7 @@ class TfidfLesk:
             for ex in ss.examples():
                 signature.extend(ex.split())
             
-            # Calculate overlap score weighted by IDF
             score = 0
-            # We can use cosine similarity of TF-IDF vectors, or just sum of IDFs of overlapping words
-            # Let's use sum of IDFs of overlapping words (Weighted Overlap)
             
             # Count frequencies in signature
             sig_counts = Counter([w.lower() for w in signature])
@@ -99,12 +96,6 @@ class TfidfLesk:
             common_words = set(sig_counts.keys()) & set(ctx_counts.keys())
             
             for word in common_words:
-                # TF in context * TF in signature * IDF^2 ? 
-                # Or just sum(IDF) for each common token instance?
-                # Standard "Lesk with TF-IDF" often means:
-                # Score = sum_{w in overlap} (IDF(w))
-                
-                # Let's do: sum(IDF(w)) for each common word type
                 score += self.get_idf(word)
             
             if score > max_score:
@@ -149,7 +140,6 @@ class EmbeddingLesk:
             return None
             
         # Context vector
-        # Exclude the ambiguous word itself from context?
         context_words = [w for w in context_sentence if w.lower() != ambiguous_word.lower()]
         context_vec = self.get_vector(context_words)
         
